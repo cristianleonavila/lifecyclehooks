@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, afterNextRender, afterRender, AfterViewChecked, AfterViewInit, Component, DoCheck, effect, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, afterNextRender, afterRender, AfterViewChecked, AfterViewInit, Component, DoCheck, effect, OnChanges, OnDestroy, OnInit, signal } from '@angular/core';
 import { log } from '../../utils';
 
 @Component({
@@ -11,8 +11,27 @@ export class HomeComponent
 
   implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
 
+  prop = "Cristian";
+
+  signalProp = signal("Leon");
+
   constructor() {
     log(`constructor`, "Standard JavaScript class constructor . Runs when Angular instantiates the component.");
+    setTimeout(() => {
+      this.signalProp.set(" Kirk Hammet");
+      log("Hecho!");
+    }, 2000);
+  }
+
+  changeProp() {
+    this.prop = `Cristian Camilo`;
+  }
+
+  changeSignalProp() {
+    this.signalProp.update((value:string) => {
+      value = `Leon Avila`;
+      return value;
+    });
   }
 
   basicEffect = effect(( onCleanup ) => {
