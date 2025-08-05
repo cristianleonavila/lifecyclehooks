@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, afterNextRender, afterRender, AfterViewChecked, AfterViewInit, Component, DoCheck, effect, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { log } from '../../utils';
 
 @Component({
@@ -14,6 +14,13 @@ export class HomeComponent
   constructor() {
     log(`constructor`, "Standard JavaScript class constructor . Runs when Angular instantiates the component.");
   }
+
+  basicEffect = effect(( onCleanup ) => {
+    log('effect', 'Disparar efectos secundarios');
+    onCleanup(() => {
+      log('onCleanup', 'Se ejecuta cuando el efecto se va a destruir');
+    });
+  });
 
   ngAfterContentChecked(): void {
     log("ngAfterContentChecked", "Runs every time this component content has been checked for changes.");
@@ -53,5 +60,13 @@ export class HomeComponent
   ngOnDestroy(): void {
     log("ngOnInit", "Runs once before the component is destroyed.");
   }
+
+  afterNextRenderEffect = afterNextRender(() => {
+    log('afterNextRender', 'Runs once the next time that all components have been rendered to the DOM.');
+  });
+
+  afterRender = afterRender(() => {
+    log('afterRender', 'Runs every time all components have been rendered to the DOM.');
+  });
 
 }
